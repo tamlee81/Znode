@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Slider - Slider scrollbar</title>
+	  <link href="./css/jquery-ui-1.8.18.custom.css" rel="stylesheet" type="text/css"/>
+      <script src="./js/jquery-1.7.1.min.js"></script>
+      <script src="./js/jquery-ui-1.8.18.custom.min.js"></script>
+	<style>
+	body { background-color: gray; }
+	#demo-frame > div.demo { padding: 10px !important; }
+	.scroll-pane { overflow: auto; width: 640px; height: 320px; margin-left: 20px; margin-bottom: 10px; background-color: #A1A1A1;}
+	.scroll-content { width: 1440px; height: 2000px; background-color: #A1A1A1; }
+	.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; }
+	* html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
+	.scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; width: 640px; }
+        .scroll-bar-vert { height: 320px; display: inline; float: left; }
+        .scroll-bar-horiz { width: 640px; margin-left: 25px; }
+    	.title 
+	{ 
+		background: -webkit-gradient(linear, left top, right top, from(#FFFFFF), to(#000));
+		width: 		620px;
+		font-size:      30px;
+		position: 	relative;
+	        padding: 	20px;	
+		top: 		35px;
+		background-color: white;
+		text-align: 	center;
+		border: 	5px solid white; 
+		opacity:	.5;
+	}
+	</style>
+	<script>
+	$(function() {
+		//scrollpane parts
+		var scrollPane = $( ".scroll-pane" ),
+			scrollContent = $( ".scroll-content" );
+		
+		//build slider
+		var scrollbar = $( ".scroll-bar-horiz" ).slider({
+			step: 1,
+			range: "min",
+			min: 0,
+			max: 100,			
+			slide: function( event, ui ) {
+				if ( scrollContent.width() > scrollPane.width() ) {
+					scrollContent.css( "margin-left", Math.round(
+						ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
+					) + "px" );
+				} else {
+					scrollContent.css( "margin-left", 0 );
+				}
+			}
+		});
+
+
+		//build slider
+		var scrollbarVert = $( ".scroll-bar-vert" ).slider({
+                        orientation: 'vertical',
+			step: 1,
+			range: "min",
+			min: 0,
+			max: 100,
+			slide: function( event, ui ) {
+				if ( scrollContent.height() > scrollPane.height() ) {
+					scrollContent.css( "margin-top", (Math.round(
+						ui.value  / 100 * ( scrollPane.width() - scrollContent.width() )
+					)) + "px" );
+				} else {
+					scrollContent.css( "margin-top", 0 );
+				}
+			}
+		});
+		
+		//append icon to handle
+		var handleHelper = scrollbar.find( ".ui-slider-handle" )
+		.mouseup(function() {
+			scrollbar.width( "640px" );
+		})
+		
+		//change overflow to hidden now that slider handles the scrolling
+		scrollPane.css( "overflow", "hidden" );
+		
+		//reset slider value based on scroll content position
+		function resetValue() {
+			var remainder = scrollPane.width() - scrollContent.width();
+			var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
+				parseInt( scrollContent.css( "margin-left" ) );
+			var percentage = Math.round( leftVal / remainder * 100 );
+			scrollbar.slider( "value", percentage );
+		}
+		
+		//if the slider is 100% and window gets larger, reveal content
+		function reflowContent() {
+				var showing = scrollContent.width() + parseInt( scrollContent.css( "margin-left" ), 10 );
+				var gap = scrollPane.width() - showing;
+				if ( gap > 0 ) {
+					scrollContent.css( "margin-left", parseInt( scrollContent.css( "margin-left" ), 10 ) + gap );
+				}
+		}
+		
+		//change handle position on window resize
+     	       $( window ).resize(function() {
+			resetValue();
+			sizeScrollbar();
+			reflowContent();
+		});
+		//init scrollbar size
+		setTimeout( sizeScrollbar, 10 );//safari wants a timeout
+	});
+	</script>
+</head>
+<body>
+ <p class="title">Class Resources: Vehicle</p>
+<div class="demo">
+
+        <div class="scroll-bar-vert ui-widget-content ui-corner-bottom "></div>
+<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+    <div class="scroll-content">
+	    <p>A vehicle (from Latin: vehiculum[1]) is a device that is designed or used to transport people or cargo. Most often vehicles are manufactured, such as bicycles, cars, motorcycles, trains, ships, boats, and aircraft.[2]
+Vehicles that do not travel on land often are called craft, such as watercraft, sailcraft, aircraft, hovercraft, and spacecraft.
+Land vehicles are classified broadly by what is used to apply steering and drive forces against the ground: wheeled, tracked, railed, or skied. ISO 3833- 1977 is the standard, also internationally used in legislation, for road vehicles types, terms and definitions.[3]
+Content
+Automobiles are among the most commonly used engine-powered vehicles
+The oldest boats to be found by archaeological excavation are logboats from around 7,000–9,000 years ago,[4][5][6][7]
+a 7,000 year-old seagoing boat made from reeds and tar has been found in Kuwait.[8]
+Boats were used between 4000BCE-3000BCE in Sumer,[9] ancient Egypt[10] and in the Indian Ocean.[9]
+There is evidence of camel pulled wheeled vehicles about 3000–4000 BCE.[11]
+The earliest evidence of a wagonway, a predecessor of the railway, found so far was the 6 to 8.5 km (4 to 5 mi) long Diolkos wagonway, which transported boats across the Isthmus of Corinth in Greece since around 600 BC.[12] Wheeled vehicles pulled by men and animals ran in grooves in limestone, which provided the track element, preventing the wagons from leaving the intended route.[13]
+In 200 CE, Ma Jun built a south-pointing chariot, a vehicle with an early form of guidance system.[14]
+Railways began reappearing in Europe after the Dark Ages. The earliest known record of a railway in Europe from this period is a stained-glass window in the Minster of Freiburg im Breisgau dating from around 1350.[15]
+In 1515, Cardinal Matthäus Lang wrote a description of the Reisszug, a funicular railway at the Hohensalzburg Castle in Austria. The line originally used wooden rails and a hemp haulage rope, and was operated by human or animal power, through a treadwheel.[16][17]
+1769 Nicolas-Joseph Cugnot is often credited with building the first self-propelled mechanical vehicle or automobile in about 1769, by adapting an existing horse-drawn vehicle, this claim is disputed by some[citation needed], who doubt Cugnot's three-wheeler ever ran or was stable.
+In Russia, in the 1780s, Ivan Kulibin developed a human-pedalled, three-wheeled carriage with modern features such as a flywheel, brake, gear box, and bearings; however, it was not developed further.[18]</p>
+	    <p>A vehicle (from Latin: vehiculum[1]) is a device that is designed or used to transport people or cargo. Most often vehicles are manufactured, such as bicycles, cars, motorcycles, trains, ships, boats, and aircraft.[2]
+Vehicles that do not travel on land often are called craft, such as watercraft, sailcraft, aircraft, hovercraft, and spacecraft.
+Land vehicles are classified broadly by what is used to apply steering and drive forces against the ground: wheeled, tracked, railed, or skied. ISO 3833- 1977 is the standard, also internationally used in legislation, for road vehicles types, terms and definitions.[3]
+Content
+Automobiles are among the most commonly used engine-powered vehicles
+The oldest boats to be found by archaeological excavation are logboats from around 7,000–9,000 years ago,[4][5][6][7]
+a 7,000 year-old seagoing boat made from reeds and tar has been found in Kuwait.[8]
+Boats were used between 4000BCE-3000BCE in Sumer,[9] ancient Egypt[10] and in the Indian Ocean.[9]
+There is evidence of camel pulled wheeled vehicles about 3000–4000 BCE.[11]
+The earliest evidence of a wagonway, a predecessor of the railway, found so far was the 6 to 8.5 km (4 to 5 mi) long Diolkos wagonway, which transported boats across the Isthmus of Corinth in Greece since around 600 BC.[12] Wheeled vehicles pulled by men and animals ran in grooves in limestone, which provided the track element, preventing the wagons from leaving the intended route.[13]
+In 200 CE, Ma Jun built a south-pointing chariot, a vehicle with an early form of guidance system.[14]
+Railways began reappearing in Europe after the Dark Ages. The earliest known record of a railway in Europe from this period is a stained-glass window in the Minster of Freiburg im Breisgau dating from around 1350.[15]
+In 1515, Cardinal Matthäus Lang wrote a description of the Reisszug, a funicular railway at the Hohensalzburg Castle in Austria. The line originally used wooden rails and a hemp haulage rope, and was operated by human or animal power, through a treadwheel.[16][17]
+1769 Nicolas-Joseph Cugnot is often credited with building the first self-propelled mechanical vehicle or automobile in about 1769, by adapting an existing horse-drawn vehicle, this claim is disputed by some[citation needed], who doubt Cugnot's three-wheeler ever ran or was stable.
+In Russia, in the 1780s, Ivan Kulibin developed a human-pedalled, three-wheeled carriage with modern features such as a flywheel, brake, gear box, and bearings; however, it was not developed further.[18]</p>
+	</div>
+
+</div>
+		<div class="scroll-bar-horiz "></div>
+</div><!-- End demo -->
+
+</body>
+</html>
+

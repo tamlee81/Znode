@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Slider - Slider scrollbar</title>
+	  <link href="./css/jquery-ui-1.8.18.custom.css" rel="stylesheet" type="text/css"/>
+      <script src="./js/jquery-1.7.1.min.js"></script>
+      <script src="./js/jquery-ui-1.8.18.custom.min.js"></script>
+	<style>
+	body { background-color: gray; }
+	#demo-frame > div.demo { padding: 10px !important; }
+	.scroll-pane { overflow: auto; width: 640px; height: 320px; margin-left: 20px; margin-bottom: 10px; background-color: #A1A1A1;}
+	.scroll-content { width: 1440px; height: 2000px; background-color: #A1A1A1; }
+	.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; }
+	* html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
+	.scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; width: 640px; }
+        .scroll-bar-vert { height: 320px; display: inline; float: left; }
+        .scroll-bar-horiz { width: 640px; margin-left: 25px; }
+    	.title 
+	{ 
+		background: -webkit-gradient(linear, left top, right top, from(#FFFFFF), to(#000));
+		width: 		620px;
+		font-size:      30px;
+		position: 	relative;
+	        padding: 	20px;	
+		top: 		35px;
+		background-color: white;
+		text-align: 	center;
+		border: 	5px solid white; 
+		opacity:	.5;
+	}
+	</style>
+	<script>
+	$(function() {
+		//scrollpane parts
+		var scrollPane = $( ".scroll-pane" ),
+			scrollContent = $( ".scroll-content" );
+		
+		//build slider
+		var scrollbar = $( ".scroll-bar-horiz" ).slider({
+			step: 1,
+			range: "min",
+			min: 0,
+			max: 100,			
+			slide: function( event, ui ) {
+				if ( scrollContent.width() > scrollPane.width() ) {
+					scrollContent.css( "margin-left", Math.round(
+						ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
+					) + "px" );
+				} else {
+					scrollContent.css( "margin-left", 0 );
+				}
+			}
+		});
+
+
+		//build slider
+		var scrollbarVert = $( ".scroll-bar-vert" ).slider({
+                        orientation: 'vertical',
+			step: 1,
+			range: "min",
+			min: 0,
+			max: 100,
+			slide: function( event, ui ) {
+				if ( scrollContent.height() > scrollPane.height() ) {
+					scrollContent.css( "margin-top", (Math.round(
+						ui.value  / 100 * ( scrollPane.width() - scrollContent.width() )
+					)) + "px" );
+				} else {
+					scrollContent.css( "margin-top", 0 );
+				}
+			}
+		});
+		
+		//append icon to handle
+		var handleHelper = scrollbar.find( ".ui-slider-handle" )
+		.mouseup(function() {
+			scrollbar.width( "640px" );
+		})
+		
+		//change overflow to hidden now that slider handles the scrolling
+		scrollPane.css( "overflow", "hidden" );
+		
+		//reset slider value based on scroll content position
+		function resetValue() {
+			var remainder = scrollPane.width() - scrollContent.width();
+			var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
+				parseInt( scrollContent.css( "margin-left" ) );
+			var percentage = Math.round( leftVal / remainder * 100 );
+			scrollbar.slider( "value", percentage );
+		}
+		
+		//if the slider is 100% and window gets larger, reveal content
+		function reflowContent() {
+				var showing = scrollContent.width() + parseInt( scrollContent.css( "margin-left" ), 10 );
+				var gap = scrollPane.width() - showing;
+				if ( gap > 0 ) {
+					scrollContent.css( "margin-left", parseInt( scrollContent.css( "margin-left" ), 10 ) + gap );
+				}
+		}
+		
+		//change handle position on window resize
+     	       $( window ).resize(function() {
+			resetValue();
+			sizeScrollbar();
+			reflowContent();
+		});
+		//init scrollbar size
+		setTimeout( sizeScrollbar, 10 );//safari wants a timeout
+	});
+	</script>
+</head>
+<body>
+ <p class="title">Source Code Sample</p>
+<div class="demo">
+
+        <div class="scroll-bar-vert ui-widget-content ui-corner-bottom "></div>
+<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+    <div class="scroll-content">
+	    </p>
+		
+//This source code would correspond to the class that was clicked on. For now, its just a sample. Enjoy the code. - C^3		
+</p><p>
+class Ring {
+  class Node {
+    def initialize: @next ring: @ring
+
+    def count: count {
+      match @next {
+        case nil ->
+          "DONE: " ++ count println
+          @ring finish!
+        case _ ->
+          "." print
+          @next @@ count: (count + 1)
+      }
+      die! # let this actor die to free resources
+    }
+  }
+
+  def initialize: amount {
+    node = nil
+    amount times: {
+      node = Node new: node ring: self
+    }
+    @start = node
+  }
+
+  def start: @parent {
+    @start count: 1
+  }
+
+  def finish! {
+    @parent run
+  }
+}
+
+# create ring and run through it
+ring = Ring new: 4000
+ring start: $ Thread current
+Thread stop # wait until finished
+  </p>
+	</div>
+
+</div>
+		<div class="scroll-bar-horiz "></div>
+</div><!-- End demo -->
+
+</body>
+</html>
+

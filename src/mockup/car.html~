@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Slider - Slider scrollbar</title>
+	  <link href="./css/jquery-ui-1.8.18.custom.css" rel="stylesheet" type="text/css"/>
+      <script src="./js/jquery-1.7.1.min.js"></script>
+      <script src="./js/jquery-ui-1.8.18.custom.min.js"></script>
+	<style>
+	body { background-color: gray; }
+	#demo-frame > div.demo { padding: 10px !important; }
+	.scroll-pane { overflow: auto; width: 640px; height: 320px; margin-left: 20px; margin-bottom: 10px; background-color: #A1A1A1;}
+	.scroll-content { width: 1440px; height: 2000px; background-color: #A1A1A1; }
+	.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; }
+	* html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
+	.scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; width: 640px; }
+        .scroll-bar-vert { height: 320px; display: inline; float: left; }
+        .scroll-bar-horiz { width: 640px; margin-left: 25px; }
+    	.title 
+	{ 
+		background: -webkit-gradient(linear, left top, right top, from(#FFFFFF), to(#000));
+		width: 		620px;
+		font-size:      30px;
+		position: 	relative;
+	        padding: 	20px;	
+		top: 		35px;
+		background-color: white;
+		text-align: 	center;
+		border: 	5px solid white; 
+		opacity:	.5;
+	}
+	</style>
+	<script>
+	$(function() {
+		//scrollpane parts
+		var scrollPane = $( ".scroll-pane" ),
+			scrollContent = $( ".scroll-content" );
+		
+		//build slider
+		var scrollbar = $( ".scroll-bar-horiz" ).slider({
+			step: 1,
+			range: "min",
+			min: 0,
+			max: 100,			
+			slide: function( event, ui ) {
+				if ( scrollContent.width() > scrollPane.width() ) {
+					scrollContent.css( "margin-left", Math.round(
+						ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
+					) + "px" );
+				} else {
+					scrollContent.css( "margin-left", 0 );
+				}
+			}
+		});
+
+
+		//build slider
+		var scrollbarVert = $( ".scroll-bar-vert" ).slider({
+                        orientation: 'vertical',
+			step: 1,
+			range: "min",
+			min: 0,
+			max: 100,
+			slide: function( event, ui ) {
+				if ( scrollContent.height() > scrollPane.height() ) {
+					scrollContent.css( "margin-top", (Math.round(
+						ui.value  / 100 * ( scrollPane.width() - scrollContent.width() )
+					)) + "px" );
+				} else {
+					scrollContent.css( "margin-top", 0 );
+				}
+			}
+		});
+		
+		//append icon to handle
+		var handleHelper = scrollbar.find( ".ui-slider-handle" )
+		.mouseup(function() {
+			scrollbar.width( "640px" );
+		})
+		
+		//change overflow to hidden now that slider handles the scrolling
+		scrollPane.css( "overflow", "hidden" );
+		
+		//reset slider value based on scroll content position
+		function resetValue() {
+			var remainder = scrollPane.width() - scrollContent.width();
+			var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
+				parseInt( scrollContent.css( "margin-left" ) );
+			var percentage = Math.round( leftVal / remainder * 100 );
+			scrollbar.slider( "value", percentage );
+		}
+		
+		//if the slider is 100% and window gets larger, reveal content
+		function reflowContent() {
+				var showing = scrollContent.width() + parseInt( scrollContent.css( "margin-left" ), 10 );
+				var gap = scrollPane.width() - showing;
+				if ( gap > 0 ) {
+					scrollContent.css( "margin-left", parseInt( scrollContent.css( "margin-left" ), 10 ) + gap );
+				}
+		}
+		
+		//change handle position on window resize
+     	       $( window ).resize(function() {
+			resetValue();
+			sizeScrollbar();
+			reflowContent();
+		});
+		//init scrollbar size
+		setTimeout( sizeScrollbar, 10 );//safari wants a timeout
+	});
+	</script>
+</head>
+<body>
+ <p class="title">Class Resources: Vehicle</p>
+<div class="demo">
+
+        <div class="scroll-bar-vert ui-widget-content ui-corner-bottom "></div>
+<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+	<div class="scroll-content">
+		<p>
+The first working steam-powered vehicle was likely to have been designed by Ferdinand Verbiest, a Flemish member of a Jesuit mission in China around 1672. It was a 65 cm-long scale-model toy for the Chinese Emperor, that was unable to carry a driver or a passenger.[10][11][12] It is not known if Verbiest's model was ever built.[11]
+Nicolas-Joseph Cugnot is widely credited with building the first self-propelled mechanical vehicle or automobile in about 1769; he created a steam-powered tricycle.[13] He also constructed two steam tractors for the French Army, one of which is preserved in the French National Conservatory of Arts and Crafts.[14] His inventions were however handicapped by problems with water supply and maintaining steam pressure.[14] In 1801, Richard Trevithick built and demonstrated his Puffing Devil road locomotive, believed by many to be the first demonstration of a steam-powered road vehicle. It was unable to maintain sufficient steam pressure for long periods, and was of little practical use.
+In 1807 Nicéphore Niépce and his brother Claude probably created the world's first internal combustion engine which they called a Pyréolophore, but they chose to install it in a boat on the river Saone in France.[15] Coincidentally, in 1807 the Swiss inventor François Isaac de Rivaz designed his own 'de Rivaz internal combustion engine' and used it to develop the world's first vehicle to be powered by such an engine. The Niépces' Pyréolophore was fuelled by a mixture of Lycopodium powder (dried Lycopodium moss), finely crushed coal dust and resin that were mixed with oil, whereas de Rivaz used a mixture of hydrogen and oxygen.[15] Neither design was very successful, as was the case with others, such as Samuel Brown, Samuel Morey, and Etienne Lenoir with his hippomobile, who each produced vehicles (usually adapted carriages or carts) powered by clumsy internal combustion engines.[16]
+</p>
+
+	<p>
+The first working steam-powered vehicle was likely to have been designed by Ferdinand Verbiest, a Flemish member of a Jesuit mission in China around 1672. It was a 65 cm-long scale-model toy for the Chinese Emperor, that was unable to carry a driver or a passenger.[10][11][12] It is not known if Verbiest's model was ever built.[11]
+Nicolas-Joseph Cugnot is widely credited with building the first self-propelled mechanical vehicle or automobile in about 1769; he created a steam-powered tricycle.[13] He also constructed two steam tractors for the French Army, one of which is preserved in the French National Conservatory of Arts and Crafts.[14] His inventions were however handicapped by problems with water supply and maintaining steam pressure.[14] In 1801, Richard Trevithick built and demonstrated his Puffing Devil road locomotive, believed by many to be the first demonstration of a steam-powered road vehicle. It was unable to maintain sufficient steam pressure for long periods, and was of little practical use.
+In 1807 Nicéphore Niépce and his brother Claude probably created the world's first internal combustion engine which they called a Pyréolophore, but they chose to install it in a boat on the river Saone in France.[15] Coincidentally, in 1807 the Swiss inventor François Isaac de Rivaz designed his own 'de Rivaz internal combustion engine' and used it to develop the world's first vehicle to be powered by such an engine. The Niépces' Pyréolophore was fuelled by a mixture of Lycopodium powder (dried Lycopodium moss), finely crushed coal dust and resin that were mixed with oil, whereas de Rivaz used a mixture of hydrogen and oxygen.[15] Neither design was very successful, as was the case with others, such as Samuel Brown, Samuel Morey, and Etienne Lenoir with his hippomobile, who each produced vehicles (usually adapted carriages or carts) powered by clumsy internal combustion engines.[16]
+	  </p>
+	</div>
+
+</div>
+		<div class="scroll-bar-horiz "></div>
+</div><!-- End demo -->
+
+</body>
+</html>
+
